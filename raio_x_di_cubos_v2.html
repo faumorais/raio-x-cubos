@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raio-X D&I — Cubos Tecnologia</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f8f7f4;color:#1a1a18;line-height:1.5;}
+.header{background:#fff;border-bottom:0.5px solid #e0dfd8;padding:1.25rem 2rem;display:flex;align-items:center;justify-content:space-between;}
+.header h1{font-size:20px;font-weight:500;}
+.header p{font-size:13px;color:#888780;margin-top:3px;}
+.guia-btn{background:transparent;border:0.5px solid #c0bfb8;border-radius:8px;padding:6px 14px;font-size:12px;cursor:pointer;color:#888780;}
+.guia-btn:hover{background:#f1efe8;}
+.container{max-width:960px;margin:0 auto;padding:1.5rem 2rem;}
+.tabs{display:flex;gap:6px;margin-bottom:1.5rem;flex-wrap:wrap;}
+.tab{background:transparent;border:0.5px solid #c0bfb8;border-radius:8px;padding:6px 14px;font-size:13px;cursor:pointer;color:#888780;}
+.tab.active{background:#f1efe8;color:#1a1a18;border-color:#888780;font-weight:500;}
+.sec{display:none;}.sec.active{display:block;}
+.subtabs{display:flex;gap:6px;margin-bottom:1.25rem;flex-wrap:wrap;}
+.stab{background:transparent;border:0.5px solid #d3d1c7;border-radius:8px;padding:5px 12px;font-size:12px;cursor:pointer;color:#888780;}
+.stab.active{background:#fff;color:#1a1a18;border-color:#888780;font-weight:500;}
+.subsec{display:none;}.subsec.active{display:block;}
+.taxa-box{background:#f1efe8;border-radius:12px;padding:.9rem 1.25rem;margin-bottom:1.5rem;display:flex;gap:28px;flex-wrap:wrap;}
+.ti span:first-child{font-size:11px;color:#888780;text-transform:uppercase;letter-spacing:.04em;display:block;}
+.ti span:last-child{font-size:15px;font-weight:500;color:#1a1a18;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:1.5rem;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.5rem;}
+.card{background:#fff;border:0.5px solid #d3d1c7;border-radius:12px;padding:.9rem 1.1rem;}
+.cl{font-size:11px;color:#888780;margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em;}
+.cv{font-size:21px;font-weight:500;color:#1a1a18;}
+.cs{font-size:11px;color:#888780;margin-top:2px;}
+.cd{font-size:12px;margin-top:4px;}
+.up{color:#3B6D11;}.dn{color:#A32D2D;}.nu{color:#888780;}
+.stitle{font-size:11px;font-weight:500;color:#888780;margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em;}
+.divider{border:none;border-top:0.5px solid #d3d1c7;margin:1.5rem 0;}
+.br{display:flex;align-items:center;gap:8px;margin-bottom:9px;}
+.bl{font-size:12px;color:#888780;width:160px;flex-shrink:0;text-align:right;}
+.bt{flex:1;background:#f1efe8;border-radius:4px;height:7px;overflow:hidden;}
+.bf{height:7px;border-radius:4px;}
+.bp{font-size:12px;font-weight:500;width:44px;color:#1a1a18;}
+.bd{font-size:11px;width:62px;}
+.badge{display:inline-block;font-size:11px;padding:2px 7px;border-radius:8px;font-weight:500;}
+.bok{background:#EAF3DE;color:#27500A;}.bwarn{background:#FAEEDA;color:#633806;}
+.balert{background:#FCEBEB;color:#501313;}.bneu{background:#f1efe8;color:#888780;border:0.5px solid #d3d1c7;}
+.insight-box{border-left:2px solid #378ADD;padding:.75rem 1rem;margin-bottom:.75rem;background:#f1efe8;border-radius:0 8px 8px 0;}
+.insight-box p{font-size:13px;color:#1a1a18;line-height:1.6;}
+.itag{font-size:11px;font-weight:500;color:#185FA5;margin-bottom:4px;text-transform:uppercase;letter-spacing:.04em;}
+.insight-alert{border-left-color:#E24B4A;}.insight-alert .itag{color:#A32D2D;}
+.insight-pos{border-left-color:#639922;}.insight-pos .itag{color:#3B6D11;}
+.insight-warn{border-left-color:#BA7517;}.insight-warn .itag{color:#854F0B;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{text-align:left;color:#888780;padding:5px 6px;border-bottom:0.5px solid #d3d1c7;font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.04em;}
+td{padding:9px 6px;border-bottom:0.5px solid #d3d1c7;color:#1a1a18;}
+td:first-child{color:#888780;}
+.hl{font-weight:500;}
+.nota{font-size:11px;color:#888780;padding:6px 10px;background:#f1efe8;border-radius:8px;margin-bottom:1rem;line-height:1.5;}
+.acoes-output{background:#f1efe8;border-radius:12px;padding:1.25rem;margin-top:1rem;font-size:13px;color:#1a1a18;line-height:1.7;white-space:pre-wrap;display:none;}
+.btn{background:transparent;border:0.5px solid #c0bfb8;border-radius:8px;padding:9px 18px;font-size:13px;cursor:pointer;color:#1a1a18;font-weight:500;width:100%;margin-top:8px;}
+.btn:hover{background:#f1efe8;}
+.cb-row{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;background:#f1efe8;border-radius:8px;cursor:pointer;font-size:13px;color:#1a1a18;line-height:1.5;margin-bottom:7px;}
+textarea{width:100%;padding:8px 10px;font-size:13px;border:0.5px solid #c0bfb8;border-radius:8px;background:#fff;color:#1a1a18;font-family:inherit;resize:vertical;line-height:1.5;margin-top:6px;}
+
+/* Modal guia */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:1000;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:#fff;border-radius:16px;padding:2rem;max-width:620px;width:90%;max-height:85vh;overflow-y:auto;}
+.modal h2{font-size:18px;font-weight:500;margin-bottom:1rem;}
+.modal h3{font-size:14px;font-weight:500;color:#4E3D8C;margin:1.25rem 0 .5rem;}
+.modal p,.modal li{font-size:13px;color:#444;line-height:1.7;}
+.modal ul{padding-left:1.25rem;margin-bottom:.75rem;}
+.modal code{background:#f1efe8;padding:2px 6px;border-radius:4px;font-size:12px;font-family:monospace;}
+.modal pre{background:#f1efe8;padding:1rem;border-radius:8px;font-size:12px;overflow-x:auto;margin:.5rem 0 1rem;font-family:monospace;line-height:1.6;}
+.close-btn{float:right;background:transparent;border:none;font-size:18px;cursor:pointer;color:#888780;}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════
+     🔧 BLOCO DE DADOS — EDITE AQUI PARA ADICIONAR UM NOVO CENSO
+     Não precisa mexer em nada abaixo desta seção!
+     ══════════════════════════════════════════════════════════ -->
+<script>
+const CENSOS = [
+  // ─── 2023.2 ────────────────────────────────────────────────
+  {
+    id: "c232",
+    label: "2023.2",
+    // Quantas pessoas ativas na empresa (total da lista - desligamentos pendentes - sócios)
+    ativos: 74,
+    // Quantas responderam
+    respondentes: 51,
+
+    // IDENTIDADE — número absoluto de respondentes de cada grupo
+    identidade: {
+      mulheres:    14,
+      negras:      25,  // pardas + pretas (IBGE)
+      lgbtq:       11,
+      neurodiv:    17,
+      pcd:          3,
+      jovens:      32,  // até 29 anos
+    },
+
+    // LIDERANÇA — percentuais (dos que responderam como líderes)
+    lideranca: {
+      total_líderes: 14,
+      fem_pct:   17.6,
+      neg_pct:    7.1,  // pardas + pretas
+      naobin_pct: 5.9,
+    },
+
+    // ACOLHIMENTO — médias (escala 1–5) e percentuais de bem-estar
+    acolhimento: {
+      bem_estar_pct:    47.1,  // % que marcaram 1 ou 2 (se sentem bem)
+      estresse_pct:     27.5,  // % que marcaram 4 ou 5
+      seguro_media:     null,  // null = dado não disponível
+      apoio_media:      null,
+      time_media:       null,
+      opiniao_media:    null,
+      rep_mulh:         3.36,
+      acol_mulh:        null,
+      rep_neg:          2.44,
+      acol_neg:         null,
+      rep_lgbt:         3.57,
+      acol_lgbt:        null,
+      rep_neuro:        4.14,
+      acol_neuro:       null,
+      acol_pcd:         4.0,
+      ouvidoria_pct:    null,  // % que acertaram o e-mail
+    },
+
+    // RESPEITAÊ
+    respeitae: {
+      participacao_pct: 80.3,
+      impacto_media:    null,
+      lid_divulga_media: null,
+      empresa_diversidade_media: null,
+    },
+
+    // INSIGHTS — escreva livremente, tipo: "alerta" | "positivo" | "atencao"
+    insights: [
+      { tipo: "alerta",   texto: "Representatividade de pessoas negras era a mais baixa de todos os grupos (2,44/5)." },
+      { tipo: "alerta",   texto: "Estresse alto: 27,5% relatavam esgotamento — o maior registro dos três censos." },
+      { tipo: "atencao",  texto: "Liderança feminina em 17,6% — concentração masculina cis na gestão." },
+      { tipo: "positivo", texto: "Taxa de resposta mais alta dos três censos (68,9%), dando maior representatividade estatística." },
+      { tipo: "positivo", texto: "Participação no Respeitaê em 80,3% — maior engajamento registrado." },
+      { tipo: "atencao",  texto: "Neurodivergentes em 33,3% dos respondentes — proporção que cairia nos censos seguintes." },
+    ],
+  },
+
+  // ─── 2024.1 ────────────────────────────────────────────────
+  {
+    id: "c241",
+    label: "2024.1",
+    ativos: 76,
+    respondentes: 42,
+    identidade: {
+      mulheres: 17,
+      negras:   24,
+      lgbtq:    13,
+      neurodiv:  9,
+      pcd:       2,
+      jovens:   31,
+    },
+    lideranca: {
+      total_líderes: 12,
+      fem_pct:   41.7,
+      neg_pct:    8.3,
+      naobin_pct: 0,
+    },
+    acolhimento: {
+      bem_estar_pct:    50.0,
+      estresse_pct:      7.1,
+      seguro_media:      4.43,
+      apoio_media:       4.57,
+      time_media:        null,
+      opiniao_media:     null,
+      rep_mulh:          3.29,
+      acol_mulh:         4.00,
+      rep_neg:           3.64,
+      acol_neg:          4.09,
+      rep_lgbt:          3.62,
+      acol_lgbt:         4.23,
+      rep_neuro:         4.11,
+      acol_neuro:        4.11,
+      acol_pcd:          3.0,
+      ouvidoria_pct:    88.1,
+    },
+    respeitae: {
+      participacao_pct:   73.8,
+      impacto_media:       3.9,
+      lid_divulga_media:   3.45,
+      empresa_diversidade_media: null,
+    },
+    insights: [
+      { tipo: "alerta",   texto: "Taxa de resposta caiu 13,6pp — menor adesão histórica (55,3%). Comparações diretas de percentual ficam distorcidas." },
+      { tipo: "alerta",   texto: "Neurodivergentes: queda real de 17 para 9 pessoas — queda de 11pp ponderado." },
+      { tipo: "positivo", texto: "Estresse despencou de 27,5% para 7,1% — maior redução entre censos." },
+      { tipo: "positivo", texto: "Representatividade de pessoas negras subiu 1,2 pontos (2,44 → 3,64)." },
+      { tipo: "positivo", texto: "Liderança feminina cresceu 24pp — de 17,6% para 41,7%." },
+      { tipo: "atencao",  texto: "Participação no Respeitaê caiu de 80,3% para 73,8% — tendência que se aprofundou." },
+    ],
+  },
+
+  // ─── 2024.2 ────────────────────────────────────────────────
+  {
+    id: "c242",
+    label: "2024.2",
+    ativos: 76,
+    respondentes: 46,
+    identidade: {
+      mulheres: 15,
+      negras:   24,
+      lgbtq:    13,
+      neurodiv:  9,
+      pcd:       4,
+      jovens:   33,
+    },
+    lideranca: {
+      total_líderes: 10,
+      fem_pct:   50.0,
+      neg_pct:   30.0,
+      naobin_pct: 0,
+    },
+    acolhimento: {
+      bem_estar_pct:    58.7,
+      estresse_pct:     10.9,
+      seguro_media:      4.80,
+      apoio_media:       4.78,
+      time_media:        4.67,
+      opiniao_media:     4.67,
+      rep_mulh:          3.53,
+      acol_mulh:         4.53,
+      rep_neg:           4.46,
+      acol_neg:          4.75,
+      rep_lgbt:          4.00,
+      acol_lgbt:         4.54,
+      rep_neuro:         4.00,
+      acol_neuro:        4.56,
+      acol_pcd:          5.00,
+      ouvidoria_pct:    84.8,
+    },
+    respeitae: {
+      participacao_pct:   43.5,
+      impacto_media:       3.83,
+      lid_divulga_media:   3.85,
+      empresa_diversidade_media: 4.65,
+    },
+    insights: [
+      { tipo: "alerta",   texto: "Participação no Respeitaê despencou 30pp em um ciclo: 73,8% → 43,5%. Maior recuo do histórico." },
+      { tipo: "alerta",   texto: "E-mail da ouvidoria: caiu pelo segundo ciclo seguido (88,1% → 84,8%)." },
+      { tipo: "positivo", texto: "Liderança atingiu paridade de gênero 50/50 pela primeira vez. Liderança negra saltou para 30%." },
+      { tipo: "positivo", texto: "Representatividade de pessoas negras chegou a 4,46/5 — crescimento de +2,02 pontos desde 2023.2." },
+      { tipo: "positivo", texto: "Bem-estar subiu para 58,7% — melhor registro histórico. Ambiente seguro em 4,80/5." },
+      { tipo: "atencao",  texto: "Representatividade de mulheres ainda é a mais baixa entre grupos (3,53/5)." },
+      { tipo: "atencao",  texto: "Estresse voltou a subir (7,1% → 10,9%) apesar do bem-estar geral positivo." },
+    ],
+  },
+
+  // ─── PRÓXIMO CENSO — copie o bloco acima e preencha aqui ───
+  // {
+  //   id: "c251",
+  //   label: "2025.1",
+  //   ativos: 80,           // ← total da lista MENOS sócios/desligamentos pendentes
+  //   respondentes: 55,     // ← total que respondeu o formulário
+  //   identidade: {
+  //     mulheres: 0,        // ← número absoluto de respondentes
+  //     negras:   0,
+  //     lgbtq:    0,
+  //     neurodiv: 0,
+  //     pcd:      0,
+  //     jovens:   0,
+  //   },
+  //   lideranca: {
+  //     total_líderes: 0,
+  //     fem_pct:   0,       // ← % sobre líderes respondentes
+  //     neg_pct:   0,
+  //     naobin_pct: 0,
+  //   },
+  //   acolhimento: {
+  //     bem_estar_pct:   0,
+  //     estresse_pct:    0,
+  //     seguro_media:    0,
+  //     apoio_media:     0,
+  //     time_media:      0,
+  //     opiniao_media:   0,
+  //     rep_mulh:        0,
+  //     acol_mulh:       0,
+  //     rep_neg:         0,
+  //     acol_neg:        0,
+  //     rep_lgbt:        0,
+  //     acol_lgbt:       0,
+  //     rep_neuro:       0,
+  //     acol_neuro:      0,
+  //     acol_pcd:        0,
+  //     ouvidoria_pct:   0,
+  //   },
+  //   respeitae: {
+  //     participacao_pct:  0,
+  //     impacto_media:     0,
+  //     lid_divulga_media: 0,
+  //     empresa_diversidade_media: 0,
+  //   },
+  //   insights: [
+  //     { tipo: "positivo", texto: "Escreva aqui um insight positivo do censo." },
+  //     { tipo: "alerta",   texto: "Escreva aqui um ponto de alerta." },
+  //     { tipo: "atencao",  texto: "Escreva aqui um ponto de atenção." },
+  //   ],
+  // },
+];
+// ═══════════════════════════════════════════════════════════════
+// FIM DO BLOCO DE DADOS — não edite abaixo desta linha
+// ═══════════════════════════════════════════════════════════════
+</script>
+
+<!-- Modal Guia -->
+<div class="modal-overlay" id="guia-modal">
+  <div class="modal">
+    <button class="close-btn" onclick="document.getElementById('guia-modal').classList.remove('open')">✕</button>
+    <h2>Como adicionar um novo censo</h2>
+    <p>Este arquivo foi feito para ser atualizado sem precisar saber código. Basta editar o bloco de dados no topo do arquivo HTML.</p>
+
+    <h3>Passo 1 — Abrir o arquivo</h3>
+    <p>Abra o arquivo <code>raio_x_di_cubos_v2.html</code> em qualquer editor de texto (Notepad, TextEdit, VS Code, etc).</p>
+
+    <h3>Passo 2 — Encontrar o bloco comentado</h3>
+    <p>Procure o trecho que começa com:</p>
+    <pre>// ─── PRÓXIMO CENSO — copie o bloco acima e preencha aqui ───
+// {
+//   id: "c251",</pre>
+    <p>Remova as barras <code>//</code> do início de cada linha (isso "ativa" o bloco) e preencha os números.</p>
+
+    <h3>Passo 3 — Preencher os dados</h3>
+    <ul>
+      <li><strong>ativos</strong>: total da lista de funcionários <em>menos</em> sócios e desligamentos pendentes</li>
+      <li><strong>respondentes</strong>: quantas pessoas responderam o formulário</li>
+      <li><strong>identidade</strong>: número absoluto (não percentual) de cada grupo entre os respondentes</li>
+      <li><strong>negras</strong>: pardas + pretas, seguindo classificação IBGE</li>
+      <li><strong>lideranca</strong>: percentuais calculados sobre os líderes respondentes</li>
+      <li><strong>acolhimento</strong>: médias em escala 1–5 e percentuais de bem-estar</li>
+      <li><code>null</code>: use quando o dado não existir naquele censo</li>
+    </ul>
+
+    <h3>Passo 4 — Adicionar insights</h3>
+    <p>No campo <code>insights</code>, escreva cada observação como texto livre. Use o tipo:</p>
+    <ul>
+      <li><code>"positivo"</code> — avanços e conquistas</li>
+      <li><code>"alerta"</code> — pontos críticos que precisam de ação</li>
+      <li><code>"atencao"</code> — pontos de atenção moderados</li>
+    </ul>
+
+    <h3>Passo 5 — Salvar e abrir</h3>
+    <p>Salve o arquivo e abra no navegador. O novo censo aparece automaticamente como uma nova aba no painel.</p>
+
+    <h3>Para compartilhar via Notion</h3>
+    <p>Hospede o arquivo gratuitamente no <strong>GitHub Pages</strong> ou <strong>Vercel</strong> e cole o link no Notion usando <em>/embed</em>. O painel fica acessível para toda a equipe pelo navegador.</p>
+  </div>
+</div>
+
+<div class="header">
+  <div>
+    <h1 id="page-title">Raio-X D&I — Cubos Tecnologia</h1>
+    <p id="page-sub">Carregando...</p>
+  </div>
+  <button class="guia-btn" onclick="document.getElementById('guia-modal').classList.add('open')">📖 Como adicionar um novo censo</button>
+</div>
+
+<div class="container">
+  <div class="tabs" id="main-tabs"></div>
+  <div id="main-content"></div>
+</div>
+
+<script>
+// ─── Helpers ────────────────────────────────────────────────
+const pct  = (n, d) => d ? (n / d * 100).toFixed(1) + '%' : '—';
+const pctN = (n, d) => d ? parseFloat((n / d * 100).toFixed(1)) : null;
+const diff = (a, b) => {
+  if (a == null || b == null) return '';
+  const v = (a - b).toFixed(1);
+  return (v > 0 ? '+' : '') + v + 'pp';
+};
+const diffCls = (a, b, invert=false) => {
+  if (a == null || b == null) return 'nu';
+  const d = a - b;
+  if (d === 0) return 'nu';
+  const up = d > 0;
+  return invert ? (up ? 'dn' : 'up') : (up ? 'up' : 'dn');
+};
+const fmt = v => v == null ? '—' : v;
+const fmtPct = v => v == null ? '—' : v + '%';
+
+function prevCenso(idx) { return idx > 0 ? CENSOS[idx - 1] : null; }
+
+// ─── Taxa de resposta ───────────────────────────────────────
+function taxaBox(censo, prev) {
+  const taxa = pctN(censo.respondentes, censo.ativos);
+  const prevTaxa = prev ? pctN(prev.respondentes, prev.ativos) : null;
+  const d = prevTaxa ? diff(taxa, prevTaxa) : '';
+  const cls = prevTaxa ? diffCls(taxa, prevTaxa) : 'nu';
+  return `<div class="taxa-box">
+    <div class="ti"><span>Respondentes</span><span>${censo.respondentes} pessoas</span></div>
+    <div class="ti"><span>Funcionários ativos</span><span>${censo.ativos} pessoas</span></div>
+    <div class="ti"><span>Taxa de resposta</span><span>${taxa}%</span></div>
+    ${prev ? `<div class="ti"><span>vs ${prev.label}</span><span class="${cls}">${d}</span></div>` : ''}
+  </div>`;
+}
+
+// ─── Card simples ───────────────────────────────────────────
+function card(label, value, sub, delta, deltaCls) {
+  return `<div class="card">
+    <div class="cl">${label}</div>
+    <div class="cv">${value}</div>
+    ${sub ? `<div class="cs">${sub}</div>` : ''}
+    ${delta ? `<div class="cd ${deltaCls}">${delta}</div>` : ''}
+  </div>`;
+}
+
+// ─── Barra horizontal ───────────────────────────────────────
+function barRow(label, val, maxVal, color, delta, deltaCls) {
+  const w = val != null ? Math.min((val / maxVal) * 100, 100).toFixed(1) : 0;
+  return `<div class="br">
+    <span class="bl">${label}</span>
+    <div class="bt"><div class="bf" style="width:${w}%;background:${color};"></div></div>
+    <span class="bp">${val != null ? val : '—'}</span>
+    ${delta ? `<span class="bd ${deltaCls}">${delta}</span>` : '<span class="bd"></span>'}
+  </div>`;
+}
+
+// ─── Insight box ────────────────────────────────────────────
+function insightBox(tipo, texto) {
+  const cls = tipo === 'alerta' ? 'insight-alert' : tipo === 'positivo' ? 'insight-pos' : 'insight-warn';
+  const tag = tipo === 'alerta' ? 'Alerta' : tipo === 'positivo' ? 'Positivo' : 'Atenção';
+  return `<div class="insight-box ${cls}"><div class="itag">${tag}</div><p>${texto}</p></div>`;
+}
+
+// ─── Aba IDENTIDADE ─────────────────────────────────────────
+function renderIdentidade(censo, prev) {
+  const id = censo.identidade;
+  const pid = prev?.identidade;
+  const at = censo.ativos;
+  const pat = prev?.ativos;
+  const resp = censo.respondentes;
+
+  const grupos = [
+    { key: 'mulheres',  label: 'Mulheres',         color: '#5DCAA5', invert: false },
+    { key: 'negras',    label: 'Pessoas negras',    color: '#7F77DD', invert: false },
+    { key: 'lgbtq',     label: 'LGBTQIAPN+',        color: '#D85A30', invert: false },
+    { key: 'neurodiv',  label: 'Neurodivergentes',  color: '#F0997B', invert: false },
+    { key: 'pcd',       label: 'PcD',               color: '#22C55E', invert: false },
+    { key: 'jovens',    label: 'Jovens-adultos (−29)', color: '#AFA9EC', invert: false },
+  ];
+
+  let cardsHtml = '<div class="g3">';
+  grupos.forEach(g => {
+    const n = id[g.key] || 0;
+    const pResp = pctN(n, resp);
+    const pPond = pctN(n, at);
+    const pn = pid ? pctN(pid[g.key] || 0, prev.ativos) : null;
+    const d = pn != null ? diff(pPond, pn) : '';
+    const cls2 = pn != null ? diffCls(pPond, pn) : 'nu';
+    cardsHtml += card(
+      g.label,
+      pct(n, resp),
+      `${n} de ${resp} resp. · ${pPond?.toFixed(1)}% da empresa`,
+      d ? d + ' ponderado' : '',
+      cls2
+    );
+  });
+  cardsHtml += '</div>';
+
+  // Liderança
+  const lid = censo.lideranca;
+  const plid = prev?.lideranca;
+  let lidHtml = `<p class="stitle">Liderança (${lid.total_líderes} líderes responderam)</p>`;
+  const lidBars = [
+    { label: 'Liderança feminina', val: lid.fem_pct, pval: plid?.fem_pct, color: '#5DCAA5', invert: false },
+    { label: 'Liderança negra (p+p)', val: lid.neg_pct, pval: plid?.neg_pct, color: '#7F77DD', invert: false },
+    { label: 'Não-binário/a', val: lid.naobin_pct, pval: plid?.naobin_pct, color: '#D4537E', invert: false },
+  ];
+  lidBars.forEach(b => {
+    const d = b.pval != null ? diff(b.val, b.pval) : '';
+    const cls2 = b.pval != null ? diffCls(b.val, b.pval) : 'nu';
+    lidHtml += barRow(b.label, b.val, 100, b.color, d, cls2);
+  });
+
+  return taxaBox(censo, prev) + cardsHtml + '<hr class="divider">' + lidHtml;
+}
+
+// ─── Aba ACOLHIMENTO ────────────────────────────────────────
+function renderAcolhimento(censo, prev) {
+  const a = censo.acolhimento;
+  const pa = prev?.acolhimento;
+
+  const bem_d = pa ? diff(a.bem_estar_pct, pa.bem_estar_pct) : '';
+  const bem_cls = pa ? diffCls(a.bem_estar_pct, pa.bem_estar_pct) : 'nu';
+  const est_d = pa ? diff(a.estresse_pct, pa.estresse_pct) : '';
+  const est_cls = pa ? diffCls(a.estresse_pct, pa.estresse_pct, true) : 'nu';
+
+  let html = `<p class="stitle">Bem-estar</p>
+  <div class="g3">
+    ${card('Sentem-se bem (1+2)', fmtPct(a.bem_estar_pct), null, bem_d, bem_cls)}
+    ${card('Estresse (4+5)', fmtPct(a.estresse_pct), null, est_d, est_cls)}
+    ${card('Ambiente seguro (média)', a.seguro_media ? a.seguro_media + ' / 5' : '—', null,
+      pa?.seguro_media ? diff(a.seguro_media, pa.seguro_media) : '',
+      pa?.seguro_media ? diffCls(a.seguro_media, pa.seguro_media) : 'nu')}
+  </div>`;
+
+  html += `<p class="stitle">Representatividade e acolhimento por grupo (escala 1–5)</p>`;
+  const repBars = [
+    { label: 'Rep. mulheres',       val: a.rep_mulh,   pval: pa?.rep_mulh,   color: '#5DCAA5', invert: false },
+    { label: 'Acol. mulheres',      val: a.acol_mulh,  pval: pa?.acol_mulh,  color: '#9FE1CB', invert: false },
+    { label: 'Rep. pessoas negras', val: a.rep_neg,    pval: pa?.rep_neg,    color: '#7F77DD', invert: false },
+    { label: 'Acol. pessoas negras',val: a.acol_neg,   pval: pa?.acol_neg,   color: '#AFA9EC', invert: false },
+    { label: 'Rep. LGBTQIAPN+',     val: a.rep_lgbt,   pval: pa?.rep_lgbt,   color: '#D85A30', invert: false },
+    { label: 'Acol. LGBTQIAPN+',   val: a.acol_lgbt,  pval: pa?.acol_lgbt,  color: '#F0997B', invert: false },
+    { label: 'Rep. neurodiv.',      val: a.rep_neuro,  pval: pa?.rep_neuro,  color: '#F5C4B3', invert: false },
+    { label: 'Acol. neurodiv.',     val: a.acol_neuro, pval: pa?.acol_neuro, color: '#EEEDFE', invert: false },
+    { label: 'Acol. PcD',          val: a.acol_pcd,   pval: pa?.acol_pcd,   color: '#9FE1CB', invert: false },
+  ];
+  repBars.forEach(b => {
+    if (b.val == null && b.pval == null) return;
+    const d = b.pval != null && b.val != null ? diff(b.val, b.pval) : '';
+    const cls2 = b.pval != null && b.val != null ? diffCls(b.val, b.pval, b.invert) : 'nu';
+    html += barRow(b.label, b.val, 5, b.color, d, cls2);
+  });
+
+  html += `<hr class="divider"><p class="stitle">Ouvidoria</p>
+  <div class="g2">
+    ${card('Conhecem e-mail correto', fmtPct(a.ouvidoria_pct), null,
+      pa?.ouvidoria_pct ? diff(a.ouvidoria_pct, pa.ouvidoria_pct) : '',
+      pa?.ouvidoria_pct ? diffCls(a.ouvidoria_pct, pa.ouvidoria_pct) : 'nu')}
+    ${card('Apoio em assédio (média)', a.apoio_media ? a.apoio_media + ' / 5' : '—', null,
+      pa?.apoio_media ? diff(a.apoio_media, pa.apoio_media) : '',
+      pa?.apoio_media ? diffCls(a.apoio_media, pa.apoio_media) : 'nu')}
+  </div>`;
+
+  return html;
+}
+
+// ─── Aba RESPEITAÊ ──────────────────────────────────────────
+function renderRespeitae(censo, prev) {
+  const r = censo.respeitae;
+  const pr = prev?.respeitae;
+
+  const p_d = pr ? diff(r.participacao_pct, pr.participacao_pct) : '';
+  const p_cls = pr ? diffCls(r.participacao_pct, pr.participacao_pct) : 'nu';
+
+  let html = `<div class="g2">
+    ${card('Participaram do comitê', fmtPct(r.participacao_pct),
+      `${Math.round(r.participacao_pct / 100 * censo.respondentes)} de ${censo.respondentes}`,
+      p_d, p_cls)}
+    ${card('Impacto das ações (média)', r.impacto_media ? r.impacto_media + ' / 5' : '—', null,
+      pr?.impacto_media ? diff(r.impacto_media, pr.impacto_media) : '',
+      pr?.impacto_media ? diffCls(r.impacto_media, pr.impacto_media) : 'nu')}
+  </div>
+  <div class="g2">
+    ${card('Liderança divulga ações', r.lid_divulga_media ? r.lid_divulga_media + ' / 5' : '—', null,
+      pr?.lid_divulga_media ? diff(r.lid_divulga_media, pr.lid_divulga_media) : '',
+      pr?.lid_divulga_media ? diffCls(r.lid_divulga_media, pr.lid_divulga_media) : 'nu')}
+    ${r.empresa_diversidade_media
+      ? card('Empresa valoriza diversidade', r.empresa_diversidade_media + ' / 5', 'Nova pergunta', '', 'nu')
+      : '<div></div>'}
+  </div>`;
+
+  return html;
+}
+
+// ─── Aba INSIGHTS ───────────────────────────────────────────
+function renderInsights(censo) {
+  return censo.insights.map(i => insightBox(i.tipo, i.texto)).join('');
+}
+
+// ─── Aba COMPARATIVO ────────────────────────────────────────
+function renderComparativo() {
+  const grupos = ['mulheres','negras','lgbtq','neurodiv','pcd','jovens'];
+  const labels = { mulheres:'Mulheres', negras:'Pessoas negras', lgbtq:'LGBTQIAPN+',
+    neurodiv:'Neurodivergentes', pcd:'PcD', jovens:'Jovens-adultos (−29)' };
+
+  const headers = CENSOS.map(c => {
+    const t = pctN(c.respondentes, c.ativos);
+    return `<th>${c.label}<br><span style="font-weight:400;color:#b0a8c8">${c.respondentes}/${c.ativos} = ${t}%</span></th>`;
+  }).join('');
+
+  // Identidade
+  let idRows = `<tr><td>Taxa de resposta</td>` +
+    CENSOS.map((c,i) => {
+      const t = pctN(c.respondentes, c.ativos);
+      const prev = CENSOS[i-1];
+      const pt = prev ? pctN(prev.respondentes, prev.ativos) : null;
+      const d = pt ? diff(t, pt) : '';
+      const cls2 = pt ? diffCls(t, pt) : 'nu';
+      return `<td class="hl">${t}%${d ? ` <span class="${cls2}" style="font-size:11px">${d}</span>` : ''}</td>`;
+    }).join('') + '</tr>';
+
+  grupos.forEach(g => {
+    idRows += `<tr><td>${labels[g]}</td>` +
+      CENSOS.map((c,i) => {
+        const n = c.identidade[g] || 0;
+        const pp = pctN(n, c.ativos);
+        const prev = CENSOS[i-1];
+        const pn = prev ? pctN(prev.identidade[g]||0, prev.ativos) : null;
+        const d = pn != null ? diff(pp, pn) : '';
+        const cls2 = pn != null ? diffCls(pp, pn) : 'nu';
+        return `<td class="${i===CENSOS.length-1?'hl':''}">${pp?.toFixed(1)}% (${n})${d ? ` <span class="${cls2}" style="font-size:11px">${d}</span>` : ''}</td>`;
+      }).join('') + '</tr>';
+  });
+
+  ['fem_pct','neg_pct'].forEach((k,ki) => {
+    const lbl = ['Liderança feminina','Liderança negra'][ki];
+    idRows += `<tr><td>${lbl}</td>` +
+      CENSOS.map((c,i) => {
+        const v = c.lideranca[k];
+        const prev = CENSOS[i-1];
+        const pv = prev?.lideranca[k];
+        const d = pv != null ? diff(v, pv) : '';
+        const cls2 = pv != null ? diffCls(v, pv) : 'nu';
+        return `<td class="${i===CENSOS.length-1?'hl':''}">${v}%${d ? ` <span class="${cls2}" style="font-size:11px">${d}</span>` : ''}</td>`;
+      }).join('') + '</tr>';
+  });
+
+  // Acolhimento
+  const acKeys = [
+    { k:'bem_estar_pct', l:'Sentem-se bem (1+2)', pct:true, inv:false },
+    { k:'estresse_pct',  l:'Estresse (4+5)',       pct:true, inv:true },
+    { k:'seguro_media',  l:'Ambiente seguro',      pct:false, inv:false },
+    { k:'rep_mulh',      l:'Rep. mulheres',         pct:false, inv:false },
+    { k:'rep_neg',       l:'Rep. pessoas negras',   pct:false, inv:false },
+    { k:'rep_lgbt',      l:'Rep. LGBTQIAPN+',       pct:false, inv:false },
+    { k:'rep_neuro',     l:'Rep. neurodiv.',         pct:false, inv:false },
+    { k:'ouvidoria_pct', l:'Conhecem e-mail ouvidoria', pct:true, inv:false },
+  ];
+
+  let acolRows = acKeys.map(({k,l,pct:isPct,inv}) => {
+    return `<tr><td>${l}</td>` +
+      CENSOS.map((c,i) => {
+        const v = c.acolhimento[k];
+        const prev = CENSOS[i-1];
+        const pv = prev?.acolhimento[k];
+        if (v == null) return `<td>—</td>`;
+        const d = pv != null ? diff(v, pv) : '';
+        const cls2 = pv != null ? diffCls(v, pv, inv) : 'nu';
+        const display = isPct ? v+'%' : v;
+        return `<td class="${i===CENSOS.length-1?'hl':''}">${display}${d ? ` <span class="${cls2}" style="font-size:11px">${d}</span>` : ''}</td>`;
+      }).join('') + '</tr>';
+  }).join('');
+
+  // Respeitaê
+  const respKeys = [
+    { k:'participacao_pct', l:'Participação no comitê', pct:true, inv:false },
+    { k:'impacto_media',    l:'Impacto das ações',      pct:false, inv:false },
+    { k:'lid_divulga_media',l:'Liderança divulga ações', pct:false, inv:false },
+  ];
+  let respRows = respKeys.map(({k,l,pct:isPct,inv}) => {
+    return `<tr><td>${l}</td>` +
+      CENSOS.map((c,i) => {
+        const v = c.respeitae[k];
+        const prev = CENSOS[i-1];
+        const pv = prev?.respeitae[k];
+        if (v == null) return `<td>—</td>`;
+        const d = pv != null ? diff(v, pv) : '';
+        const cls2 = pv != null ? diffCls(v, pv, inv) : 'nu';
+        const display = isPct ? v+'%' : v;
+        return `<td class="${i===CENSOS.length-1?'hl':''}">${display}${d ? ` <span class="${cls2}" style="font-size:11px">${d}</span>` : ''}</td>`;
+      }).join('') + '</tr>';
+  }).join('');
+
+  return `
+  <p class="nota">Percentuais ponderados = n absoluto ÷ funcionários ativos. Variação só é real se o n absoluto mudou.</p>
+  <p class="stitle" style="margin-bottom:8px">Identidade</p>
+  <div style="overflow-x:auto;margin-bottom:1.5rem"><table>
+    <tr><th>Indicador</th>${headers}</tr>${idRows}
+  </table></div>
+  <p class="stitle" style="margin-bottom:8px">Acolhimento</p>
+  <div style="overflow-x:auto;margin-bottom:1.5rem"><table>
+    <tr><th>Indicador</th>${headers}</tr>${acolRows}
+  </table></div>
+  <p class="stitle" style="margin-bottom:8px">Respeitaê</p>
+  <div style="overflow-x:auto"><table>
+    <tr><th>Indicador</th>${headers}</tr>${respRows}
+  </table></div>`;
+}
+
+// ─── Aba AÇÕES COM IA ───────────────────────────────────────
+function renderAcoes() {
+  const pontos = [
+    "Participação no Respeitaê caiu 30pp em um ciclo: 73,8% → 43,5%",
+    "Neurodivergentes: queda real de 17 para 9 pessoas desde 2023.2",
+    "E-mail da ouvidoria: 15,2% ainda não conhecem, tendência de queda",
+    "Representatividade de mulheres a mais baixa entre grupos (3,53/5)",
+    "Estresse voltou a subir: 7,1% → 10,9%",
+    "Mulheres: −2 pessoas respondendo na visão ponderada",
+    "Taxa de resposta ainda abaixo de 2023.2 (68,9%)",
+  ];
+
+  let cbs = pontos.map((p,i) =>
+    `<label class="cb-row"><input type="checkbox" id="cb${i}" style="margin-top:2px;flex-shrink:0"> ${p}</label>`
+  ).join('');
+
+  return `<p class="stitle">Gerador de ações com IA</p>
+  <p style="font-size:13px;color:#888780;margin-bottom:1rem">Selecione os pontos de atenção e gere recomendações práticas.</p>
+  ${cbs}
+  <label style="font-size:13px;color:#888780">Contexto adicional (opcional)</label>
+  <textarea id="ctx" rows="3" placeholder="Ex: empresa de tecnologia em Salvador, 76 pessoas..."></textarea>
+  <button class="btn" onclick="gerarAcoes()">Gerar ações com IA ↗</button>
+  <div id="acoes-out" class="acoes-output"></div>`;
+}
+
+// ─── Montar a UI ────────────────────────────────────────────
+function buildUI() {
+  const tabsEl = document.getElementById('main-tabs');
+  const contentEl = document.getElementById('main-content');
+
+  // Atualizar subtítulo
+  const ultimo = CENSOS[CENSOS.length - 1];
+  document.getElementById('page-sub').textContent =
+    `Censos: ${CENSOS.map(c => c.label).join(' · ')} · Pessoas negras = pardas + pretas (IBGE)`;
+
+  // Tabs dos censos
+  CENSOS.forEach((censo, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'tab' + (idx === CENSOS.length - 1 ? ' active' : '');
+    btn.textContent = censo.label;
+    btn.onclick = () => showMainTab('censo-' + censo.id, btn);
+    tabsEl.appendChild(btn);
+  });
+
+  // Tab comparativo
+  const compBtn = document.createElement('button');
+  compBtn.className = 'tab';
+  compBtn.textContent = 'Comparativo';
+  compBtn.onclick = () => showMainTab('comp', compBtn);
+  tabsEl.appendChild(compBtn);
+
+  // Tab ações
+  const acoesBtn = document.createElement('button');
+  acoesBtn.className = 'tab';
+  acoesBtn.textContent = 'Ações com IA';
+  acoesBtn.onclick = () => showMainTab('acoes-tab', acoesBtn);
+  tabsEl.appendChild(acoesBtn);
+
+  // Conteúdo de cada censo
+  CENSOS.forEach((censo, idx) => {
+    const prev = prevCenso(idx);
+    const sec = document.createElement('div');
+    sec.id = 'censo-' + censo.id;
+    sec.className = 'sec' + (idx === CENSOS.length - 1 ? ' active' : '');
+
+    const stabs = `<div class="subtabs">
+      <button class="stab active" onclick="showSub('${censo.id}','id',this)">Identidade</button>
+      <button class="stab" onclick="showSub('${censo.id}','acol',this)">Acolhimento</button>
+      <button class="stab" onclick="showSub('${censo.id}','resp',this)">Respeitaê</button>
+      <button class="stab" onclick="showSub('${censo.id}','ins',this)">Insights</button>
+    </div>`;
+
+    sec.innerHTML = stabs +
+      `<div id="sub-${censo.id}-id" class="subsec active">${renderIdentidade(censo, prev)}</div>` +
+      `<div id="sub-${censo.id}-acol" class="subsec">${renderAcolhimento(censo, prev)}</div>` +
+      `<div id="sub-${censo.id}-resp" class="subsec">${renderRespeitae(censo, prev)}</div>` +
+      `<div id="sub-${censo.id}-ins" class="subsec">${renderInsights(censo)}</div>`;
+
+    contentEl.appendChild(sec);
+  });
+
+  // Comparativo
+  const compSec = document.createElement('div');
+  compSec.id = 'comp';
+  compSec.className = 'sec';
+  compSec.innerHTML = renderComparativo();
+  contentEl.appendChild(compSec);
+
+  // Ações com IA
+  const acoesSec = document.createElement('div');
+  acoesSec.id = 'acoes-tab';
+  acoesSec.className = 'sec';
+  acoesSec.innerHTML = renderAcoes();
+  contentEl.appendChild(acoesSec);
+}
+
+function showMainTab(id, el) {
+  document.querySelectorAll('#main-content .sec').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('#main-tabs .tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id)?.classList.add('active');
+  el.classList.add('active');
+}
+
+function showSub(censoId, sub, el) {
+  const prefix = `sub-${censoId}-`;
+  document.querySelectorAll(`[id^="${prefix}"]`).forEach(s => s.classList.remove('active'));
+  el.parentElement.querySelectorAll('.stab').forEach(t => t.classList.remove('active'));
+  document.getElementById(prefix + sub)?.classList.add('active');
+  el.classList.add('active');
+}
+
+async function gerarAcoes() {
+  const pontos = Array.from(document.querySelectorAll('#acoes-tab input[type=checkbox]'))
+    .filter(cb => cb.checked)
+    .map(cb => cb.parentElement.textContent.trim());
+  if (!pontos.length) { alert('Selecione pelo menos um ponto.'); return; }
+  const ctx = document.getElementById('ctx').value;
+  const el = document.getElementById('acoes-out');
+  el.style.display = 'block';
+  el.style.color = '#888780';
+  el.style.fontStyle = 'italic';
+  el.textContent = 'Analisando e gerando ações...';
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514', max_tokens: 1000,
+        messages: [{ role: 'user', content:
+          `Especialista em D&I em tech. Raio-X Cubos Tecnologia.\n\nPontos de atenção:\n${pontos.map((s,i)=>`${i+1}. ${s}`).join('\n')}\n\n${ctx?'Contexto: '+ctx:''}\n\nPara cada ponto: análise breve (1-2 linhas), 2-3 ações concretas, métrica para próximo censo. Direto e prático. Português.`
+        }]
+      })
+    });
+    const data = await res.json();
+    el.style.color = '#1a1a18'; el.style.fontStyle = 'normal';
+    el.textContent = data.content?.map(b => b.text||'').join('') || 'Erro.';
+  } catch(e) {
+    el.style.color = '#1a1a18'; el.style.fontStyle = 'normal';
+    el.textContent = 'Erro ao conectar com a IA.';
+  }
+}
+
+buildUI();
+</script>
+</body>
+</html>
